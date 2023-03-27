@@ -1,0 +1,37 @@
+.card {
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    border-radius: 14px;
+    background-color: white;
+    margin: 1rem;
+    width: 10em;
+  }
+
+  .form-control {
+    margin: 20px 2rem;
+  }
+
+
+.form-control input,
+.form-control select,
+.form-control textarea {
+  font: inherit;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 100%;
+}
+
+.form-control input:focus,
+.form-control select:focus,
+.form-control textarea:focus
+ {
+  outline: none;
+  border-color: #de82828f;
+  background-color: #ffbbbb8f;
+}
+
+.form-control .error {
+  color: rgb(210, 54, 54);
+}

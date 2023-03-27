@@ -1,3 +1,7 @@
+@import './assets/styles/UI.scss';
+@import './assets/styles/layout.scss';
+@import './assets/styles/priority.scss';
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,6 +9,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #ffbbbb8f;
 }
 
 code {
