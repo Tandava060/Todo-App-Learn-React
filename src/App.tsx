@@ -16,9 +16,11 @@ function App() {
   useEffect(() => {
 
     const getData = async () => {
-      const dataReceived = await makeRequest('http://localhost:3000/Todos');
-      if (!error) {
+      try {
+        const dataReceived = await makeRequest('http://localhost:3000/Todos');
         todoStore.getTodos(dataReceived);
+      } catch (errorMsg) {
+        console.log("Error while deleting:", errorMsg);
       }
     }
 

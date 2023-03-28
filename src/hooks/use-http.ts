@@ -19,17 +19,17 @@ const useHttp = () => {
       });
       setDataReceived(data);
       setIsLoading(false);
-      return data;
+      return Promise.resolve(data);
     } catch (error: AxiosError | any) {
       let errorMsg = "";
       if (axios.isAxiosError(error)) {
         errorMsg = error.message;
-        return error.message;
       } else {
-        errorMsg = "An error has occured!";
+        errorMsg = "An error has occurred!";
       }
       setError(errorMsg);
       setIsLoading(false);
+      return Promise.reject(errorMsg);
     }
   };
 

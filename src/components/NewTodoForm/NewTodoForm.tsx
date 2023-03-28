@@ -33,11 +33,15 @@ const NewTodosForm: React.FC = () => {
                 due: new Date(dueDate),
                 text: text
             }
-            const dataReceived = await makeRequest('http://localhost:3000/Todos', 'POST', newTodo);
-            if (!error) {
+
+            try {
+                const dataReceived = await makeRequest('http://localhost:3000/Todos', 'POST', newTodo);
                 todoStore.addTodo(dataReceived);
                 openNotification()
+            } catch (errorMsg) {
+                console.log("Error while deleting:", errorMsg);
             }
+
             clearForm()
         }
     }

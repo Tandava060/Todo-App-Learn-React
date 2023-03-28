@@ -13,20 +13,21 @@ const TodoItem: React.FC<{ item: Todo }> = ({ item }) => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const todoStore = useTodoStore();
     const priorityClass = Priority[item.priority].toLowerCase() + '-circle';
-    const { dataReceived, error, isLoading, makeRequest } = useHttp();
+    const { isLoading, makeRequest } = useHttp();
 
     const showDeleteModal = () => {
         setIsDeleteModalOpen(true);
     };
 
     const handleDeleteRequest = async () => {
-
-        makeRequest(`http://localhost:3000/Todos/${item.id}`, 'DELETE')
-        if (!error) {
-            todoStore.removeTodo(item.id)
+        try {
+            await makeRequest(`http://localhost:3000/Todos/${item.id}`, "DELETE");
+            todoStore.removeTodo(item.id);
+        } catch (errorMsg) {
+            console.log("Error while deleting:", errorMsg);
+        } finally {
+            setIsDeleteModalOpen(false);
         }
-        setIsDeleteModalOpen(false);
-
     };
 
     const handleEditCancel = () => {
@@ -38,14 +39,15 @@ const TodoItem: React.FC<{ item: Todo }> = ({ item }) => {
     };
 
     const handleEditRequest = async () => {
-
-        makeRequest(`http://localhost:3000/Todos/${item.id}`, 'PUT', { ...item, done: true })
-        if (!error) {
-            console.log(dataReceived)
-            // todoStore.removeTodo(item.id)
+        try {
+            const updatedItem = { ...item, done: true };
+            await makeRequest(`http://localhost:3000/Todos/${item.id}`, 'PUT', updatedItem)
+            todoStore.updateTodo(updatedItem);
+        } catch (errorMsg) {
+            console.log("Error while deleting:", errorMsg);
+        } finally {
+            setIsEditModalOpen(false);
         }
-        setIsEditModalOpen(false);
-
     };
 
     const handleDeleteCancel = () => {
