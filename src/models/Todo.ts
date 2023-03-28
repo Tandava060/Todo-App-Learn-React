@@ -1,7 +1,7 @@
 import { Priority } from "./Priority";
 
 interface Todo {
-  id?: string;
+  id: string;
   done: boolean;
   name: string;
   priority: Priority;

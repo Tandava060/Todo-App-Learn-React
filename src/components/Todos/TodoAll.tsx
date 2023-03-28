@@ -1,11 +1,14 @@
 import React from "react";
-import Todo from "../../models/Todo";
+import useTodoStore from "../../store/use-todo-store";
 import TodoItem from "./TodoItem";
 
-const TodosAll: React.FC<{ items: Todo[] }> = (props) => {
+const TodosAll: React.FC = () => {
+
+    const todos = useTodoStore((state) => state.Todos)
+
     return (
         <div className="flex-align-center">
-            {props.items.map(item => <TodoItem key={item.id} item={item} />)}
+            {todos.map(item => <TodoItem key={item.id} item={item} />)}
         </div>
     )
 }

@@ -1,42 +1,41 @@
 import './App.css';
 import TodosAll from './components/Todos/TodoAll';
-import Todo from './models/Todo';
-import { Priority } from './models/Priority';
 import PriorityList from './components/Priority/PriorityList';
+import { Button, Spin } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { useEffect } from 'react';
+import useTodoStore from './store/use-todo-store';
+import useHttp from './hooks/use-http';
 
 function App() {
+  const todoStore = useTodoStore();
+  const { error, isLoading, makeRequest } = useHttp();
 
-  const todo: Todo[] = [
-    {
-      id: '1',
-      done: false,
-      due: new Date(),
-      name: 'Learning react',
-      priority: Priority.Low,
-      text: 'Learning for upskill'
-    },
-    {
-      id: '2',
-      done: false,
-      due: new Date(),
-      name: 'Learning typescript',
-      priority: Priority.Low,
-      text: 'Learning for upskill'
-    },
-    {
-      id: '3',
-      done: false,
-      due: new Date(),
-      name: 'Learning typescript',
-      priority: Priority.High,
-      text: 'Learning for upskill'
-    },
-  ]
+  useEffect(() => {
+
+    const getData = async () => {
+      const dataReceived = await makeRequest('http://localhost:3000/Todos');
+      if (!error) {
+        todoStore.getTodos(dataReceived);
+      }
+    }
+
+    getData();
+  }, [])
+
 
   return (
     <div className="App">
-      <PriorityList />
-      <TodosAll items={todo} />
+      <h1 className='todo-header'>Todo App</h1>
+      <div style={{ margin: '2rem' }} className='flex-align-center justify-space-between'>
+        <PriorityList />
+        <Link to="/new"><Button danger type='primary'>Add <PlusOutlined /></Button></Link>
+      </div>
+      <Spin spinning={isLoading}>
+        <TodosAll />
+      </Spin>
     </div>
   );
 }
