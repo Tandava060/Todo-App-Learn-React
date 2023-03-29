@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Card, Row, Col, Button, Spin, notification } from 'antd';
+import { Card, Row, Col, Button } from 'antd';
 import { Priority } from "../../models/Priority";
 import Todo from "../../models/Todo";
 import { Link } from "react-router-dom";
 import useHttp from "../../hooks/use-http";
 import useTodoStore from "../../store/use-todo-store";
+import useNotificationStore from "../../store/use-notification-store";
 
 type FormErrors = {
     title?: string;
@@ -20,9 +21,10 @@ const NewTodosForm: React.FC = () => {
     const [priority, setPriority] = useState<Priority>(Priority.Normal);
     const [text, setText] = useState<string>('');
     const [errors, setErrors] = useState<FormErrors>({});
-    const { dataReceived, error, isLoading, makeRequest } = useHttp();
+    const { makeRequest } = useHttp();
     const todoStore = useTodoStore();
-    const [api, contextHolder] = notification.useNotification();
+    const notiffStore = useNotificationStore();
+
 
     const submitHandler = async () => {
         if (validateForm()) {
@@ -37,21 +39,15 @@ const NewTodosForm: React.FC = () => {
             try {
                 const dataReceived = await makeRequest('http://localhost:3000/Todos', 'POST', newTodo);
                 todoStore.addTodo(dataReceived);
-                openNotification()
-            } catch (errorMsg) {
-                console.log("Error while deleting:", errorMsg);
+                notiffStore.showSuccessNotiff('New Todo has successfully been created!')
+                clearForm();
+            } catch (errorMsg: any) {
+                notiffStore.showSuccessNotiff(errorMsg)
             }
-
-            clearForm()
         }
     }
 
-    const openNotification = () => {
-        api.error({
-            message: `Notification`,
-            description: 'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-        })
-    };
+
 
     const clearForm = () => {
         setDueDate('');
@@ -135,20 +131,17 @@ const NewTodosForm: React.FC = () => {
 
 
     const form = (<Card className="form-container">
-        <div className='flex-align-center justify-space-between'>
+        <div style={{ textAlign: "center" }}>
             <h3>Create New Task</h3>
-            <div>
-                <Link to='..'><Button style={{ marginRight: '20px' }}>Back</Button></Link>
-                <Button type="primary" onClick={submitHandler}>Submit</Button>
-            </div>
+
         </div>
 
         <form onSubmit={() => submitHandler}>
             <Row className="form-control">
-                <Col span={4}>
-                    <label htmlFor="title">Title</label>
+                <Col sm={24} lg={6} xl={5}>
+                    <label htmlFor="title">Title :</label>
                 </Col>
-                <Col span={20}>
+                <Col sm={24} lg={18} xl={19}>
                     <input
                         type="text"
                         id="title"
@@ -161,10 +154,10 @@ const NewTodosForm: React.FC = () => {
             </Row>
 
             <Row className="form-control">
-                <Col span={4}>
-                    <label htmlFor="date">Due Date</label>
+                <Col sm={24} lg={6} xl={5}>
+                    <label htmlFor="date">Due Date :</label>
                 </Col>
-                <Col span={20}>
+                <Col sm={24} lg={18} xl={19}>
                     <input
                         type="date"
                         id="date"
@@ -177,10 +170,10 @@ const NewTodosForm: React.FC = () => {
             </Row>
 
             <Row className="form-control">
-                <Col span={4}>
-                    <label htmlFor="priority">Priority</label>
+                <Col sm={24} lg={6} xl={5}>
+                    <label htmlFor="priority">Priority :</label>
                 </Col>
-                <Col span={20}>
+                <Col sm={24} lg={18} xl={19}>
                     <select
                         id="priority"
                         value={priority}
@@ -194,10 +187,10 @@ const NewTodosForm: React.FC = () => {
             </Row>
 
             <Row className="form-control">
-                <Col span={4}>
-                    <label htmlFor="text">Text</label>
+                <Col sm={24} lg={6} xl={5}>
+                    <label htmlFor="text">Text :</label>
                 </Col>
-                <Col span={20}>
+                <Col sm={24} lg={18} xl={19}>
                     <textarea
                         id="text"
                         value={text}
@@ -209,14 +202,15 @@ const NewTodosForm: React.FC = () => {
             </Row>
 
         </form>
+        <div style={{ textAlign: "end" }}>
+            <Link to='..'><Button style={{ marginRight: '20px' }}>Back</Button></Link>
+            <Button type="primary" danger onClick={submitHandler}>Submit</Button>
+        </div>
     </Card>)
 
     return (
         <>
-            {contextHolder}
-            <Spin spinning={isLoading}>
-                {form}
-            </Spin>
+            {form}
         </>
     )
 }

@@ -1,19 +1,23 @@
 import { Priority } from "../../models/Priority";
 import Todo from "../../models/Todo";
-import { Avatar, Card, Modal, Spin } from "antd";
+import { Avatar, Card, Modal } from "antd";
 import { DeleteOutlined, EditOutlined, CheckOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import useTodoStore from "../../store/use-todo-store";
 import useHttp from "../../hooks/use-http";
+import useNotificationStore from "../../store/use-notification-store";
 
 
 const { Meta } = Card;
-const TodoItem: React.FC<{ item: Todo }> = ({ item }) => {
+const TodoItem: React.FC<{ item: Todo }> = ({
+    item
+}) => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const todoStore = useTodoStore();
+    const notiffStore = useNotificationStore();
     const priorityClass = Priority[item.priority].toLowerCase() + '-circle';
-    const { isLoading, makeRequest } = useHttp();
+    const { makeRequest } = useHttp();
 
     const showDeleteModal = () => {
         setIsDeleteModalOpen(true);
@@ -23,8 +27,9 @@ const TodoItem: React.FC<{ item: Todo }> = ({ item }) => {
         try {
             await makeRequest(`http://localhost:3000/Todos/${item.id}`, "DELETE");
             todoStore.removeTodo(item.id);
-        } catch (errorMsg) {
-            console.log("Error while deleting:", errorMsg);
+            notiffStore.showSuccessNotiff(`Task ${item.name} has been deleted!`)
+        } catch (errorMsg: any) {
+            notiffStore.showErrorNotiff(errorMsg)
         } finally {
             setIsDeleteModalOpen(false);
         }
@@ -43,8 +48,9 @@ const TodoItem: React.FC<{ item: Todo }> = ({ item }) => {
             const updatedItem = { ...item, done: true };
             await makeRequest(`http://localhost:3000/Todos/${item.id}`, 'PUT', updatedItem)
             todoStore.updateTodo(updatedItem);
-        } catch (errorMsg) {
-            console.log("Error while deleting:", errorMsg);
+            notiffStore.showSuccessNotiff(`Task ${item.name} has been completed!`)
+        } catch (errorMsg: any) {
+            notiffStore.showErrorNotiff(errorMsg)
         } finally {
             setIsEditModalOpen(false);
         }
@@ -70,15 +76,15 @@ const TodoItem: React.FC<{ item: Todo }> = ({ item }) => {
                 />
             </Card>
 
-            <Spin spinning={isLoading}>
-                <Modal title="Delete Item" open={isDeleteModalOpen} onOk={handleDeleteRequest} okText='Delete' okType="danger" onCancel={handleDeleteCancel}>
-                    <p>Are you sure you want to delete task '{item.name}'</p>
-                </Modal>
+            <Modal title="Delete Item" open={isDeleteModalOpen} onOk={handleDeleteRequest} okText='Delete' okType="danger" onCancel={handleDeleteCancel}>
+                <p>Are you sure you want to delete task '{item.name}'</p>
+            </Modal>
 
-                <Modal title="Complete Item" open={isEditModalOpen} onOk={handleEditRequest} okText='Yes' okType="danger" onCancel={handleEditCancel}>
-                    <p>Have you completed task '{item.name}' ?</p>
-                </Modal>
-            </Spin>
+            <Modal title="Complete Item" open={isEditModalOpen} onOk={handleEditRequest} okText='Yes' okType="danger" onCancel={handleEditCancel}>
+                <p>Have you completed task '{item.name}' ?</p>
+            </Modal>
+
+
         </>
 
 

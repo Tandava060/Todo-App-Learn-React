@@ -9,7 +9,7 @@
       "id": 1
     },
     {
-      "done": true,
+      "done": false,
       "name": "Hello world",
       "priority": 1,
       "due": "2023-04-07T00:00:00.000Z",
@@ -17,15 +17,7 @@
       "id": 2
     },
     {
-      "done": true,
-      "name": "Ash Tood",
-      "priority": 2,
-      "due": "2023-04-01T00:00:00.000Z",
-      "text": "Hello world",
-      "id": 3
-    },
-    {
-      "done": true,
+      "done": false,
       "name": "heyya",
       "priority": 0,
       "due": "2023-04-01T00:00:00.000Z",
@@ -33,15 +25,7 @@
       "id": 5
     },
     {
-      "done": true,
-      "name": "Heyy",
-      "priority": 2,
-      "due": "2023-04-06T00:00:00.000Z",
-      "text": "Hello world",
-      "id": 6
-    },
-    {
-      "done": true,
+      "done": false,
       "name": "Testing4",
       "priority": 0,
       "due": "2023-04-07T00:00:00.000Z",
@@ -50,43 +34,11 @@
     },
     {
       "done": true,
-      "name": "balbla",
-      "priority": 1,
+      "name": "hello world",
+      "priority": 0,
       "due": "2023-04-09T00:00:00.000Z",
-      "text": "safwqegvsdvvd",
+      "text": "efqwegrsfd",
       "id": 8
-    },
-    {
-      "done": true,
-      "name": "hello",
-      "priority": 2,
-      "due": "2023-04-08T00:00:00.000Z",
-      "text": "davdbvfds",
-      "id": 9
-    },
-    {
-      "done": true,
-      "name": "xzcvsd",
-      "priority": 0,
-      "due": "2023-04-08T00:00:00.000Z",
-      "text": "sdv",
-      "id": 10
-    },
-    {
-      "done": false,
-      "name": "heyya",
-      "priority": 0,
-      "due": "2023-03-30T00:00:00.000Z",
-      "text": "hdjnskjnfsd,ds",
-      "id": 11
-    },
-    {
-      "done": false,
-      "name": "efwef",
-      "priority": 1,
-      "due": "2023-04-08T00:00:00.000Z",
-      "text": "ewgfrw vbf",
-      "id": 12
     }
   ]
 }

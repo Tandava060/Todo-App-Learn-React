@@ -8,6 +8,7 @@ import {
   Navigate
 } from "react-router-dom";
 import NewTodosForm from './components/NewTodoForm/NewTodoForm';
+import { ConfigProvider } from 'antd';
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ConfigProvider>
+      <RouterProvider router={router} />
+    </ConfigProvider>
   </React.StrictMode>
 );

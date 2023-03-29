@@ -1,10 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import axios, { AxiosError } from "axios";
-import { useState } from "react";
+import useIsLoadingStore from "../store/use-is-loading-store";
 
 const useHttp = () => {
-  const [dataReceived, setDataReceived] = useState<any>();
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const isLoadingStore = useIsLoadingStore();
 
   const makeRequest = async (
     url: string,
@@ -12,13 +11,12 @@ const useHttp = () => {
     dataToSend: any = null
   ) => {
     try {
-      setIsLoading(true);
+      isLoadingStore.setIsloading(true);
       const { data } = await axios(url, {
         method: method,
         data: dataToSend,
       });
-      setDataReceived(data);
-      setIsLoading(false);
+      isLoadingStore.setIsloading(false);
       return Promise.resolve(data);
     } catch (error: AxiosError | any) {
       let errorMsg = "";
@@ -27,16 +25,12 @@ const useHttp = () => {
       } else {
         errorMsg = "An error has occurred!";
       }
-      setError(errorMsg);
-      setIsLoading(false);
+      isLoadingStore.setIsloading(false);
       return Promise.reject(errorMsg);
     }
   };
 
   return {
-    dataReceived,
-    error,
-    isLoading,
     makeRequest,
   };
 };
