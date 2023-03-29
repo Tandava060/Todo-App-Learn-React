@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 import useHttp from "../../hooks/use-http";
 import useTodoStore from "../../store/use-todo-store";
 import useNotificationStore from "../../store/use-notification-store";
+import { useForm } from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 
 type FormErrors = {
     title?: string;
@@ -14,38 +17,58 @@ type FormErrors = {
     text?: string;
 };
 
+const formSchema = z.object({
+    name: z.string().min(1, { message: 'Name is Required' }),
+    due: z.string().refine((val) => {
+        let value = new Date(val);
+        const now = new Date();
+        const selectedDate = new Date(value.getFullYear(), value.getMonth(), value.getDate());
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        return selectedDate > today
+    }, "Due date should be greater than today."),
+    text: z.string().min(1, { message: 'Text is required' }),
+    priority: z.string()
+});
+
+
 const NewTodosForm: React.FC = () => {
 
     const [title, setTitle] = useState<string>('');
     const [dueDate, setDueDate] = useState<string>('');
     const [priority, setPriority] = useState<Priority>(Priority.Normal);
     const [text, setText] = useState<string>('');
-    const [errors, setErrors] = useState<FormErrors>({});
+    // const [errors, setErrors] = useState<FormErrors>({});
     const { makeRequest } = useHttp();
     const todoStore = useTodoStore();
     const notiffStore = useNotificationStore();
 
+    type FormSchemaType = z.infer<typeof formSchema>;
+    const { register, handleSubmit, watch, formState: { errors } } = useForm<FormSchemaType>({
+        resolver: zodResolver(formSchema)
+    });
 
-    const submitHandler = async () => {
-        if (validateForm()) {
-            const newTodo: Omit<Todo, "id"> = {
-                done: false,
-                name: title,
-                priority: priority,
-                due: new Date(dueDate),
-                text: text
-            }
 
-            try {
-                const dataReceived = await makeRequest('http://localhost:3000/Todos', 'POST', newTodo);
-                todoStore.addTodo(dataReceived);
-                notiffStore.showSuccessNotiff('New Todo has successfully been created!')
-                clearForm();
-            } catch (errorMsg: any) {
-                notiffStore.showSuccessNotiff(errorMsg)
-            }
-        }
-    }
+    const submitHandler = handleSubmit((formData) => {
+        console.log(formData, errors);
+        // if (validateForm()) {
+        //     const newTodo: Omit<Todo, "id"> = {
+        //         done: false,
+        //         name: title,
+        //         priority: priority,
+        //         due: new Date(dueDate),
+        //         text: text
+        //     }
+
+        //     try {
+        //         const dataReceived = await makeRequest('http://localhost:3000/Todos', 'POST', newTodo);
+        //         todoStore.addTodo(dataReceived);
+        //         notiffStore.showSuccessNotiff('New Todo has successfully been created!')
+        //         clearForm();
+        //     } catch (errorMsg: any) {
+        //         notiffStore.showSuccessNotiff(errorMsg)
+        //     }
+        // }
+    })
 
 
 
@@ -55,80 +78,6 @@ const NewTodosForm: React.FC = () => {
         setText('');
         setTitle('');
     }
-
-    const isEmpty = (value: string) => !value.trim();
-    const isDateInvalid = (value: Date) => {
-        const now = new Date();
-        const selectedDate = new Date(value.getFullYear(), value.getMonth(), value.getDate());
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        return selectedDate < today
-    };
-
-    const validateForm = (): boolean => {
-        const newErrors: FormErrors = {};
-        if (isEmpty(title)) {
-            newErrors.title = 'Title is required.';
-        }
-        if (isEmpty(dueDate)) {
-            newErrors.date = 'Due date is required.';
-        } else if (isDateInvalid(new Date(dueDate))) {
-            newErrors.date = 'Due date should be greater than today.';
-        }
-
-        if (isEmpty(text)) {
-            newErrors.text = 'Text is required.';
-        }
-
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
-
-    const titleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setTitle(event.target.value);
-        if (isEmpty(event.target.value)) {
-            setErrors(errors => {
-                return { ...errors, title: 'Title is required.' }
-            });
-        } else {
-            setErrors(errors => {
-                delete errors['title'];
-                return { ...errors }
-            });
-        }
-    }
-
-    const dateChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDueDate(event.target.value);
-        if (isEmpty(event.target.value)) {
-            setErrors(errors => {
-                return { ...errors, date: 'Due Date is required.' }
-            });
-        } else if (isDateInvalid(new Date(event.target.value))) {
-            setErrors(errors => {
-                return { ...errors, date: 'Due date should be greater than today.' }
-            });
-        } else {
-            setErrors(errors => {
-                delete errors['date'];
-                return { ...errors }
-            });
-        }
-    }
-
-    const textChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement> | React.FocusEvent<HTMLTextAreaElement>) => {
-        setText(event.target.value);
-        if (isEmpty(event.target.value)) {
-            setErrors(errors => {
-                return { ...errors, text: 'Text is required.' }
-            });
-        } else {
-            setErrors(errors => {
-                delete errors['text'];
-                return { ...errors }
-            });
-        }
-    }
-
 
     const form = (<Card className="form-container">
         <div style={{ textAlign: "center" }}>
@@ -143,13 +92,14 @@ const NewTodosForm: React.FC = () => {
                 </Col>
                 <Col sm={24} lg={18} xl={19}>
                     <input
+                        {...register("name")}
                         type="text"
                         id="title"
-                        value={title}
-                        onChange={titleChangeHandler}
-                        onBlur={titleChangeHandler}
+                    // value={title}
+                    // onChange={titleChangeHandler}
+                    // onBlur={titleChangeHandler}
                     />
-                    {errors.title && <p className="error">{errors.title}</p>}
+                    {errors.name && <p className="error">{errors.name.message}</p>}
                 </Col>
             </Row>
 
@@ -159,13 +109,14 @@ const NewTodosForm: React.FC = () => {
                 </Col>
                 <Col sm={24} lg={18} xl={19}>
                     <input
+                        {...register("due")}
                         type="date"
                         id="date"
-                        value={dueDate}
-                        onChange={dateChangeHandler}
-                        onBlur={dateChangeHandler}
+                    // value={dueDate}
+                    // onChange={dateChangeHandler}
+                    // onBlur={dateChangeHandler}
                     />
-                    {errors.date && <p className="error">{errors.date}</p>}
+                    {errors.due && <p className="error">{errors.due.message}</p>}
                 </Col>
             </Row>
 
@@ -176,8 +127,9 @@ const NewTodosForm: React.FC = () => {
                 <Col sm={24} lg={18} xl={19}>
                     <select
                         id="priority"
-                        value={priority}
-                        onChange={(e) => setPriority(Number(e.target.value))}
+                        // value={priority}
+                        // onChange={(e) => setPriority(Number(e.target.value))}
+                        {...register("priority")}
                     >
                         <option value={Priority.Low}>Low</option>
                         <option value={Priority.Normal}>Normal</option>
@@ -193,11 +145,12 @@ const NewTodosForm: React.FC = () => {
                 <Col sm={24} lg={18} xl={19}>
                     <textarea
                         id="text"
-                        value={text}
-                        onChange={textChangeHandler}
-                        onBlur={textChangeHandler}
+                        // value={text}
+                        {...register("text")}
+                    // onChange={textChangeHandler}
+                    // onBlur={textChangeHandler}
                     />
-                    {errors.text && <p className="error">{errors.text}</p>}
+                    {errors.text && <p className="error">{errors.text.message}</p>}
                 </Col>
             </Row>
 
