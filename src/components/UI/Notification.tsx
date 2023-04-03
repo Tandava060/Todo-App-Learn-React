@@ -1,9 +1,8 @@
+/* eslint-disable react/display-name */
 import { notification } from 'antd';
 import { forwardRef, useEffect, useImperativeHandle } from 'react';
-import useNotificationStore from '../../store/use-notification-store';
+import useNotificationStore from 'store/use-notification-store';
 
-
-// eslint-disable-next-line react/display-name
 const Notification = forwardRef((_props, ref) => {
 
     const [api, contextHolder] = notification.useNotification();

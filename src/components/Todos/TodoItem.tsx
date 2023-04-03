@@ -1,12 +1,12 @@
-import { Priority } from '../../models/Priority';
-import Todo from '../../models/Todo';
-import { Avatar, Card, Modal } from 'antd';
 import { DeleteOutlined, EditOutlined, CheckOutlined } from '@ant-design/icons';
+import { Card, Avatar, Modal } from 'antd';
+import useHttp from 'hooks/use-http';
+import { Priority } from 'models/Priority';
+import Todo from 'models/Todo';
 import { useState } from 'react';
-import useTodoStore from '../../store/use-todo-store';
-import useHttp from '../../hooks/use-http';
-import useNotificationStore from '../../store/use-notification-store';
 import { Link } from 'react-router-dom';
+import useNotificationStore from 'store/use-notification-store';
+import useTodoStore from 'store/use-todo-store';
 
 
 const { Meta } = Card;

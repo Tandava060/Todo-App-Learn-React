@@ -1,10 +1,10 @@
-import TodoForm from '../components/TodoForm/TodoForm';
-import useHttp from '../hooks/use-http';
-import Todo from '../models/Todo';
-import useNotificationStore from '../store/use-notification-store';
-import useTodoStore from '../store/use-todo-store';
+import TodoForm from 'components/TodoForm/TodoForm';
+import useHttp from 'hooks/use-http';
+import Todo from 'models/Todo';
+import { useState, useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useCallback, useEffect, useState } from 'react';
+import useNotificationStore from 'store/use-notification-store';
+import useTodoStore from 'store/use-todo-store';
 
 const EditForm = () => {
 

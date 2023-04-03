@@ -1,6 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import axios, { AxiosError } from 'axios';
-import useIsLoadingStore from '../store/use-is-loading-store';
+import useIsLoadingStore from 'store/use-is-loading-store';
 
 const useHttp = () => {
   const isLoadingStore = useIsLoadingStore();

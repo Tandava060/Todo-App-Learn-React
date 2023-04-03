@@ -1,8 +1,6 @@
-import React from 'react';
-import useTodoStore from '../../store/use-todo-store';
+import { AllTodosState } from 'models/AllTodosState';
+import useTodoStore from 'store/use-todo-store';
 import TodoItem from './TodoItem';
-import { AllTodosState } from '../../models/AllTodosState';
-import Todo from '../../models/Todo';
 
 const TodosAll: React.FC<{ todosState: AllTodosState }> = ({ todosState }) => {
     const todoStore = useTodoStore();

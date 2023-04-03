@@ -1,8 +1,8 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { Priority } from '../models/Priority';
-import '@testing-library/jest-dom/extend-expect';
+import TodoForm from 'components/TodoForm/TodoForm';
+import { Priority } from 'models/Priority';
 import { BrowserRouter } from 'react-router-dom';
-import TodoForm from '../components/TodoForm/TodoForm';
+
 
 const todo = {
     done: false,

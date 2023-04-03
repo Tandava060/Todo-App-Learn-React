@@ -1,5 +1,5 @@
+import Todo from 'models/Todo';
 import { create } from 'zustand';
-import Todo from '../models/Todo';
 
 export interface TodoState {
   todos: Todo[];

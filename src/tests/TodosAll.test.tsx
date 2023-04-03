@@ -1,11 +1,10 @@
 import { act, render, screen, waitFor } from '@testing-library/react';
-import { Priority } from '../models/Priority';
-import Todo from '../models/Todo';
-import '@testing-library/jest-dom/extend-expect';
-import useTodoStore from '../store/use-todo-store';
-import TodosAll from '../components/Todos/TodoAll';
+import TodosAll from 'components/Todos/TodoAll';
+import { AllTodosState } from 'models/AllTodosState';
+import { Priority } from 'models/Priority';
+import Todo from 'models/Todo';
 import { BrowserRouter } from 'react-router-dom';
-import { AllTodosState } from '../models/AllTodosState';
+import useTodoStore from 'store/use-todo-store';
 
 
 const mockTodos: Todo[] = [

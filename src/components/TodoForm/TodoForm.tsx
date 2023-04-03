@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import { Card, Row, Col, Button } from 'antd';
-import { Priority } from '../../models/Priority';
-import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import Todo from '../../models/Todo';
+import { Card, Row, Col, Button } from 'antd';
+import { Priority } from 'models/Priority';
+import Todo from 'models/Todo';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import { z } from 'zod';
 
 const formSchema = z.object({
     name: z.string().min(1, { message: 'Name is Required' }),

@@ -1,5 +1,3 @@
-
-
 export enum AllTodosState {
   All,
   Todo,

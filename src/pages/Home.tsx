@@ -1,11 +1,11 @@
-import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
-import PriorityList from '../components/Priority/PriorityList';
-import TodosAll from '../components/Todos/TodoAll';
-import TodosSelectState from '../components/Todos/TodoSelectState';
+import { Button } from 'antd';
+import PriorityList from 'components/Priority/PriorityList';
+import TodosAll from 'components/Todos/TodoAll';
+import TodosSelectState from 'components/Todos/TodoSelectState';
+import { AllTodosState } from 'models/AllTodosState';
 import { useState } from 'react';
-import { AllTodosState } from '../models/AllTodosState';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
 

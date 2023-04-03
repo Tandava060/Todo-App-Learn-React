@@ -1,5 +1,5 @@
-import { Select } from 'antd';
-import React from 'react'; import { AllTodosState } from '../../models/AllTodosState';
+import Select from 'antd/es/select';
+import { AllTodosState } from 'models/AllTodosState';
 
 const TodosSelectState: React.FC<{ changeState: (changedState: AllTodosState) => void }> = ({ changeState }) => {
 
