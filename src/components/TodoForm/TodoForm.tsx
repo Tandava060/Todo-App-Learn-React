@@ -123,7 +123,7 @@ const TodoForm: React.FC<{ sendData: (todo: (Omit<Todo, 'id'> | Todo), reset: ()
             </form>
             <div style={{ textAlign: 'end' }}>
                 <Link to='..'><Button style={{ marginRight: '20px' }}>Back</Button></Link>
-                <Button type="primary" danger onClick={submitHandler}>Submit</Button>
+                <Button type="primary" onClick={submitHandler}>Submit</Button>
             </div>
         </Card>)
     );

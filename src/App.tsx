@@ -4,7 +4,7 @@ import useTodoStore from './store/use-todo-store';
 import useHttp from './hooks/use-http';
 import useIsLoadingStore from './store/use-is-loading-store';
 import Notification from './components/UI/Notification';
-import { Spin } from 'antd';
+import { ConfigProvider, Spin } from 'antd';
 import { Outlet } from 'react-router';
 import useNotificationStore from './store/use-notification-store';
 
@@ -27,10 +27,19 @@ function App() {
   }, []);
 
   return (
-    <Spin spinning={isLoadingStore.isLoading}>
-      <Outlet />
-      <Notification />
-    </Spin>
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#647cdf',
+        },
+      }}
+    >
+      <Spin spinning={isLoadingStore.isLoading}>
+        <Outlet />
+        <Notification />
+      </Spin>
+    </ConfigProvider>
+
   );
 }
 

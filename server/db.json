@@ -17,14 +17,6 @@
       "id": 2
     },
     {
-      "done": false,
-      "name": "heyya",
-      "priority": 0,
-      "due": "2023-04-01T00:00:00.000Z",
-      "text": "jsjslakknsd",
-      "id": 5
-    },
-    {
       "done": true,
       "name": "hello world",
       "priority": 0,

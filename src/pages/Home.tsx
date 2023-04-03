@@ -19,7 +19,7 @@ const Home = () => {
             <PriorityList />
             <div className='flex-align-center'>
                 <TodosSelectState changeState={changeAllTodosState} />
-                <Link style={{ marginLeft: '20px' }} to="/todo/new"><Button danger type='primary'>Add <PlusOutlined /></Button></Link>
+                <Link style={{ marginLeft: '20px' }} to="/todo/new"><Button type='primary'>Add <PlusOutlined /></Button></Link>
             </div>
         </div>
         <TodosAll todosState={todosAllState} />
