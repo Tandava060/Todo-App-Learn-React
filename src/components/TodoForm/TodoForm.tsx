@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Card, Row, Col, Button } from 'antd';
 import { Priority } from 'models/Priority';
 import Todo from 'models/Todo';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
@@ -24,12 +24,15 @@ const formSchema = z.object({
 
 const TodoForm: React.FC<{ sendData: (todo: (Omit<Todo, 'id'> | Todo), reset: () => void) => void, todo?: Todo }> = ({ sendData, todo = null }) => {
 
+    const [title, setTitle] = useState('Create New Task');
+
     useEffect(() => {
         if (todo) {
             setValue('name', todo.name);
             setValue('due', todo.due.toISOString().slice(0, 10));
             setValue('priority', todo.priority.toString());
             setValue('text', todo.text);
+            setTitle(`Edit form ${todo.name}`);
         }
     }, [todo]);
 
@@ -55,7 +58,7 @@ const TodoForm: React.FC<{ sendData: (todo: (Omit<Todo, 'id'> | Todo), reset: ()
     return (
         (<Card className="form-container">
             <div style={{ textAlign: 'center' }}>
-                <h3>Create New Task</h3>
+                <h3>{title}</h3>
 
             </div>
 
