@@ -1,30 +1,29 @@
-import { create } from "zustand";
-import Todo from "../models/Todo";
+import { create } from 'zustand';
+import Todo from '../models/Todo';
 
-interface TodoState {
-  Todos: Todo[];
-  getTodos: (todo: Todo[]) => void;
+export interface TodoState {
+  todos: Todo[];
+  setTodos: (todo: Todo[]) => void;
   addTodo: (todo: Todo) => void;
-  //   updateTodo: (todos: Todo) => void;
-  removeTodo: (id: string) => void;
+  removeTodo: (id: number) => void;
   updateTodo: (todo: Todo) => void;
 }
 
 const useTodoStore = create<TodoState>((set) => ({
-  Todos: [],
-  addTodo: (todo) => set((state) => ({ Todos: [...state.Todos, todo] })),
-  getTodos: (todos) => set((state) => ({ Todos: [...todos] })),
-  removeTodo: (id: string) =>
+  todos: [],
+  addTodo: (todo) => set((state) => ({ todos: [...state.todos, todo] })),
+  setTodos: (todos) => set(() => ({ todos: [...todos] })),
+  removeTodo: (id: number) =>
     set((state) => {
-      var filteredTodo = state.Todos.filter((todo) => todo.id !== id);
-      return { Todos: filteredTodo };
+      const filteredTodo = state.todos.filter((todo) => todo.id !== id);
+      return { todos: filteredTodo };
     }),
   updateTodo: (todo) =>
     set((state) => {
-      let todos = [...state.Todos];
+      const todos = [...state.todos];
       const todoIndex = todos.findIndex(({ id }) => todo.id === id);
       todos[todoIndex] = todo;
-      return { Todos: todos };
+      return { todos: todos };
     }),
 }));
 

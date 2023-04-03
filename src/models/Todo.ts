@@ -1,7 +1,7 @@
-import { Priority } from "./Priority";
+import { Priority } from './Priority';
 
 interface Todo {
-  id: string;
+  id: number;
   done: boolean;
   name: string;
   priority: Priority;

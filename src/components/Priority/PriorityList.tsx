@@ -4,8 +4,8 @@ const PriorityList: React.FC = () => {
         <p className="priority-details"><span className="low-circle-big"></span> Low</p>
         <p className="priority-details"><span className="normal-circle-big"></span> Normal</p>
         <p className="priority-details"><span className="high-circle-big"></span> High</p>
-    </div>
-}
+    </div>;
+};
 
 export default PriorityList;
 

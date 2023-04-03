@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 interface isLoadingState {
   showSuccessNotiff: (msg: string) => void;
@@ -11,9 +11,9 @@ const useNotificationStore = create<isLoadingState>((set) => ({
   showSuccessNotiff: (msg: string) => {},
   showErrorNotiff: (msg: string) => {},
   setShowSuccessNotiff: (fn: (msg: string) => void) =>
-    set((state) => ({ showSuccessNotiff: fn })),
+    set(() => ({ showSuccessNotiff: fn })),
   setShowErrorNotiff: (fn: (msg: string) => void) =>
-    set((state) => ({ showErrorNotiff: fn })),
+    set(() => ({ showErrorNotiff: fn })),
 }));
 
 export default useNotificationStore;

@@ -1,11 +1,12 @@
-import { Priority } from "../../models/Priority";
-import Todo from "../../models/Todo";
-import { Avatar, Card, Modal } from "antd";
-import { DeleteOutlined, EditOutlined, CheckOutlined } from "@ant-design/icons";
-import { useState } from "react";
-import useTodoStore from "../../store/use-todo-store";
-import useHttp from "../../hooks/use-http";
-import useNotificationStore from "../../store/use-notification-store";
+import { Priority } from '../../models/Priority';
+import Todo from '../../models/Todo';
+import { Avatar, Card, Modal } from 'antd';
+import { DeleteOutlined, EditOutlined, CheckOutlined } from '@ant-design/icons';
+import { useState } from 'react';
+import useTodoStore from '../../store/use-todo-store';
+import useHttp from '../../hooks/use-http';
+import useNotificationStore from '../../store/use-notification-store';
+import { Link } from 'react-router-dom';
 
 
 const { Meta } = Card;
@@ -25,11 +26,11 @@ const TodoItem: React.FC<{ item: Todo }> = ({
 
     const handleDeleteRequest = async () => {
         try {
-            await makeRequest(`http://localhost:3000/Todos/${item.id}`, "DELETE");
+            await makeRequest(`http://localhost:3000/Todos/${item.id}`, 'DELETE');
             todoStore.removeTodo(item.id);
-            notiffStore.showSuccessNotiff(`Task ${item.name} has been deleted!`)
-        } catch (errorMsg: any) {
-            notiffStore.showErrorNotiff(errorMsg)
+            notiffStore.showSuccessNotiff(`Task ${item.name} has been deleted!`);
+        } catch (errorMsg: unknown) {
+            notiffStore.showErrorNotiff(errorMsg as string);
         } finally {
             setIsDeleteModalOpen(false);
         }
@@ -46,11 +47,11 @@ const TodoItem: React.FC<{ item: Todo }> = ({
     const handleEditRequest = async () => {
         try {
             const updatedItem = { ...item, done: true };
-            await makeRequest(`http://localhost:3000/Todos/${item.id}`, 'PUT', updatedItem)
+            await makeRequest(`http://localhost:3000/Todos/${item.id}`, 'PUT', updatedItem);
             todoStore.updateTodo(updatedItem);
-            notiffStore.showSuccessNotiff(`Task ${item.name} has been completed!`)
-        } catch (errorMsg: any) {
-            notiffStore.showErrorNotiff(errorMsg)
+            notiffStore.showSuccessNotiff(`Task ${item.name} has been completed!`);
+        } catch (errorMsg: unknown) {
+            notiffStore.showErrorNotiff(errorMsg as string);
         } finally {
             setIsEditModalOpen(false);
         }
@@ -61,14 +62,14 @@ const TodoItem: React.FC<{ item: Todo }> = ({
     };
 
     const cardActions = [
-        <DeleteOutlined onClick={showDeleteModal} />,
-        <EditOutlined onClick={() => console.log("edit")} />,
-        <CheckOutlined onClick={showEditModal} />,
-    ]
+        <DeleteOutlined data-testid="delete-button" onClick={showDeleteModal} />,
+        <Link to={`/todo/edit/${item.id}`} ><EditOutlined /></Link>,
+        <CheckOutlined data-testid="complete-button" onClick={showEditModal} />,
+    ];
 
     return (
         <>
-            <Card actions={cardActions} style={{ margin: '20px' }}>
+            <Card data-testid="todo-item" actions={cardActions} style={{ margin: '20px' }}>
                 <Meta
                     avatar={<Avatar className={priorityClass} size="small" />}
                     title={item.name}
@@ -77,19 +78,14 @@ const TodoItem: React.FC<{ item: Todo }> = ({
             </Card>
 
             <Modal title="Delete Item" open={isDeleteModalOpen} onOk={handleDeleteRequest} okText='Delete' okType="danger" onCancel={handleDeleteCancel}>
-                <p>Are you sure you want to delete task '{item.name}'</p>
+                <p>Are you sure you want to delete task `&apos;{item.name}`&apos;</p>
             </Modal>
 
             <Modal title="Complete Item" open={isEditModalOpen} onOk={handleEditRequest} okText='Yes' okType="danger" onCancel={handleEditCancel}>
-                <p>Have you completed task '{item.name}' ?</p>
+                <p>Have you completed task `&apos;{item.name}`&apos; ?</p>
             </Modal>
-
-
         </>
-
-
-
-    )
-}
+    );
+};
 
 export default TodoItem;
